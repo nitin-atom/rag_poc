@@ -1,0 +1,10 @@
+Update the model ID to use the fine-tune model if necessary. 
+Steps:
+1. Update the model ID in the rag.py file.
+
+ CHAT_MODEL = "ft:gpt-4o-mini:your-org:your-model-name:abc123"
+ Replace with your fine-tuned model ID from the OpenAI platform.
+2. Update the API key in the .env file to include a key from the jonathanb@Atom.com account.
+3. Restart the backend server.
+4. Test the chatbot.
+
