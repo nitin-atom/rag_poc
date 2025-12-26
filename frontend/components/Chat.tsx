@@ -30,11 +30,10 @@ export default function Chat() {
     scrollToBottom()
   }, [messages])
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, starterQuestion?: string) => {
     e.preventDefault()
-    if (!input.trim() || isLoading) return
-
-    const question = input.trim()
+    const question = starterQuestion?.trim() || input.trim()
+    if (!question || isLoading) return
     setInput('')
 
     const userMessage: Message = {
@@ -90,6 +89,16 @@ export default function Chat() {
     setIsLoading(false)
   }
 
+  const handleStarter = (question: string) => {
+    handleSubmit({ preventDefault: () => {} } as React.FormEvent, question)
+  }
+
+  const starters = [
+    'How do I sell a domain?',
+    'How do I change my name servers?',
+    'How do I transfer a domain?',
+  ]
+
   return (
     <div style={styles.container}>
       <header style={styles.header}>
@@ -129,6 +138,17 @@ export default function Chat() {
               <p style={styles.emptyText}>
                 Get answers about buying or selling domains, updating name servers, getting paid and more.
               </p>
+              <div style={styles.starters}>
+                {starters.map((starter, i) => (
+                  <button
+                    key={i}
+                    onClick={() => handleStarter(starter)}
+                    style={styles.starterButton}
+                  >
+                    {starter}
+                  </button>
+                ))}
+              </div>
             </div>
           ) : (
             <div style={styles.messages}>
@@ -307,6 +327,24 @@ const styles: { [key: string]: React.CSSProperties } = {
     fontSize: 14,
     color: 'var(--text-secondary)',
     maxWidth: 320,
+  },
+  starters: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: 8,
+    marginTop: 24,
+    justifyContent: 'center',
+  },
+  starterButton: {
+    padding: '8px 14px',
+    fontSize: 13,
+    color: 'var(--text-secondary)',
+    background: 'var(--bg-tertiary)',
+    border: '1px solid var(--border)',
+    borderRadius: 'var(--radius-sm)',
+    cursor: 'pointer',
+    transition: 'all 0.15s ease',
+    fontFamily: 'inherit',
   },
   messages: {
     display: 'flex',
